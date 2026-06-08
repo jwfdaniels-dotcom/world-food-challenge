@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Around the World Food Challenge</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:1000px;margin:auto;padding:20px}
+button{padding:10px 16px;font-size:16px}
+#result{margin-top:20px;padding:15px;border:1px solid #ccc;border-radius:8px}
+.done{color:#888}
+</style>
+</head>
+<body>
+<h1>🌍 Around the World Food Challenge</h1>
+<p>Spin to get a country and iconic dish. Mark completed countries and they won't appear again.</p>
+<button onclick="spin()">🎡 Spin</button>
+<button onclick="completeCountry()">✅ We Cooked This</button>
+<div id="stats"></div>
+<div id="result">Spin to begin!</div>
+
+<script>
+const countries=[
+["Italy","Pizza Margherita","Vegetarian already"],
+["Japan","Ramen","Tofu Ramen"],
+["Thailand","Pad Thai","Tofu Pad Thai"],
+["India","Butter Chicken","Chana Masala"],
+["Mexico","Tacos al Pastor","Bean Tacos"],
+["Greece","Moussaka","Vegetarian Moussaka"],
+["France","Coq au Vin","Ratatouille"],
+["Spain","Paella","Vegetable Paella"],
+["China","Peking Duck","Mapo Tofu"],
+["Vietnam","Pho","Vegetarian Pho"],
+["Turkey","Kebab","Falafel"],
+["Morocco","Tagine","Vegetable Tagine"],
+["Germany","Schnitzel","Mushroom Schnitzel"],
+["Brazil","Feijoada","Black Bean Feijoada"],
+["Peru","Lomo Saltado","Vegetarian Saltado"],
+["Argentina","Asado","Provoleta"],
+["New Zealand","Hāngī","Vegetarian Hāngī"],
+["Australia","Meat Pie","Veggie Pie"],
+["South Korea","Bibimbap","Vegetarian Bibimbap"],
+["Indonesia","Nasi Goreng","Tempeh Nasi Goreng"],
+["Malaysia","Laksa","Vegetarian Laksa"],
+["Sri Lanka","Rice and Curry","Vegetarian Curry"],
+["Nepal","Momo","Veg Momo"],
+["Egypt","Koshari","Koshari"],
+["Ethiopia","Doro Wat","Misir Wat"],
+["Kenya","Nyama Choma","Bean Stew"],
+["Nigeria","Jollof Rice","Vegetable Jollof"],
+["Iceland","Hákarl","Skyr Dessert"],
+["Sweden","Meatballs","Veg Balls"],
+["Norway","Fårikål","Root Vegetable Stew"]
+];
+
+let completed=JSON.parse(localStorage.getItem("completed")||"[]");
+let current=null;
+
+function updateStats(){
+document.getElementById("stats").innerHTML=`<h3>Progress: ${completed.length}/${countries.length}</h3>`;
+}
+function spin(){
+const available=countries.filter(c=>!completed.includes(c[0]));
+if(!available.length){document.getElementById("result").innerHTML="<h2>🏆 Every country completed!</h2>";return;}
+current=available[Math.floor(Math.random()*available.length)];
+document.getElementById("result").innerHTML=`
+<h2>${current[0]}</h2>
+<p><b>Iconic Dish:</b> ${current[1]}</p>
+<p><b>Vegetarian Option:</b> ${current[2]}</p>`;
+}
+function completeCountry(){
+if(!current) return;
+if(!completed.includes(current[0])){
+completed.push(current[0]);
+localStorage.setItem("completed",JSON.stringify(completed));
+updateStats();
+}
+}
+updateStats();
+</script>
+</body>
+</html>
